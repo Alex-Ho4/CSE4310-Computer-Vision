@@ -1,0 +1,207 @@
+
+<!-- saved from url=(0081)http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/assignment4/ -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ <title>CSE 4310 - Assignment 4 </title>
+</head>
+
+<body>
+<h1><a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/index.html">CSE 4310</a> -
+<a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/index.html">Assignments</a> - Assignment 4</h1>
+
+<h3><a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/">List of assignment due dates.</a></h3>
+
+The assignment should be submitted via <a href="http://elearn.uta.edu/">Blackboard</a>. 
+
+
+<br>
+<br>
+
+<hr>
+
+<h3>
+Task 1 (15 points)
+</h3>
+
+
+Write a Matlab function <tt>distance = euclidean_distance(image1, image2)</tt>that takes in as arguments two grayscale images A (not filenames), and returns the Euclidean distance of those two grayscale images. Obviously, you should vectorize the two images before computing their Euclidean distance.
+
+<br>
+<br>
+
+<hr>
+
+
+<h3>
+Task 2 (20 points)
+</h3>
+
+Write a Matlab function <tt>class_label = nnc_euclidean(test_image)</tt> that recognizes the digit shown in <tt>test_image</tt> using nearest neighbor classification under the Euclidean distance. Argument <tt>test_image</tt> is a grayscale image, not a filename.
+
+<p>
+
+You can test your code with these <a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/assignment4/digits_test">test images</a>, which can be downloaded as <a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/assignment4/digits_test.zip">a single ZIP file</a>. Each of those images comes from the popular <a href="http://yann.lecun.com/exdb/mnist/">MNIST dataset</a> of handwritten digits. The ZIP file provides 100 test images. Each image shows one of the digits, from 0 to 9. There are ten examples from each class. Each filename follows the format <tt>labelX_testY.png</tt>, where X is the class for that image, and Y is a number from 1 to 10.
+
+</p><p>
+
+To recognize the digit, you should use nearest neighbor classification (hence the initials nnc in the function name), based on the Euclidean distance. Your function should measure (using your solution to Task 1) the Euclidean distance between <tt>test_image</tt> and every one of the training examples provided in the <a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/assignment4/digits_training">digits_training</a> directory. You can download the entire training directory as a <a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/assignment4/digits_training.zip">single ZIP file</a>. The training directory provides a 15 examples for each class, for a total of 150 training examples. Each filename in the training directory follows the format <tt>labelX_trainingY.png</tt>, where X is the class for that image, and Y is a number from 1 to 15. 
+
+</p><p> 
+
+After your code measures the Euclidean distance between <tt>test_image</tt> and all training examples, it should identify the training example with the smallest distance, and return the class label of that training example. If there are multiple training examples tied for the smallest distance, you can return any of the class labels of those examples, we will not care how you break ties.
+
+</p><p>
+
+It is OK to hardcode in your function the following info:
+
+</p><ul>
+
+<li> The training examples are under a directory called <tt>digits_training</tt>, which is a subdirectory of the current directory.
+
+</li><li> Each filename in the training directory follows the format <tt>labelX_trainingY.png</tt>, where X is the class for that image, and Y is a number from 0 to 9. This way your code will know the ground truth for each training example.
+
+</li><li> There are 15 training examples per class.
+
+</li></ul>
+
+<br>
+
+<hr>
+
+
+<h3>
+Task 3 (15 points)
+</h3>
+
+Write a Matlab function <tt>[accuracy, confusion_matrix = nnc_euclidean_stats()</tt> that measures the classification accuracy of nearest neighbor classification using the Euclidean distance. Your function should evaluate this accuracy using all 100 images in the <a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/assignment4/digits_test">digits_test</a> directory. Note that this function takes no arguments. All the information that it needs should be hardcoded, as described below.
+
+
+<p>
+
+It is OK for your function to hardcode the same information about training examples that you hardcode for Task 2. It is also OK to hardcode the following information about the test examples:
+
+</p><ul>
+
+<li> The test examples are under a directory called <tt>digits_test</tt>, which is a subdirectory of the current directory.
+
+</li><li> Each filename in the test directory follows the format <tt>labelX_testY.png</tt>, where X is the class for that image, and Y is a number from 0 to 9. This way your code will know the ground truth for each test example.
+
+</li><li> There are 10 training examples per class.
+
+</li></ul>
+
+Your function returns two values. The first one is <tt>accuracy</tt>, which is a real number between 0 and 1, equal to the percentage of test images that were classified correctly. The second one is <tt>confusion_matrix</tt>, which is a 10x10 matrix where each value <tt>confusion_matrix(i,j)</tt>is a number between 0 and 1 indicating the percentage of test images of class i that were classified as belonging to class j. For the confusion matrix, treat class label "0" as class label "10". This way, the results for that class show up in the 10th row and the 10th column of the confusion matrix.
+
+<p>
+
+As an example, <tt>confusion_matrix(3,7)</tt> should be the percentage of test images whose real class is "3", and for which your <tt>nnc_euclidean</tt> function returned a class label of "7". Similarly, <tt>confusion_matrix(10,2)</tt> should be the percentage of test images whose real class is "0", and for which your <tt>nnc_euclidean</tt> function returned a class label of "2". 
+
+<br>
+<br>
+
+</p><hr>
+
+<h3>
+Task 4 (15 points)
+</h3>
+
+
+Write a Matlab function <tt>distance = chamfer_distance(image1, image2)</tt>that takes in as arguments two grayscale images A (not filenames), and returns the chamfer distance of those two images. You should return the symmetric chamfer distance, which is the sum of the two directed chamfer distances (from <tt>image1</tt> to <tt>image2</tt>, and from <tt>image2</tt> to <tt>image1</tt>). 
+
+<p>
+
+The chamfer distance is a distance between two sets of points. The set of points corresponding to each image should be the set of pixels in that image that have NON-ZERO values. 
+
+<br>
+<br>
+
+</p><hr>
+
+
+<h3>
+Task 5 (20 points)
+</h3>
+
+Write a Matlab function <tt>class_label = nnc_chamfer(test_image)</tt> that recognizes the digit shown in <tt>test_image</tt> using nearest neighbor classification under the chamfer distance. Argument <tt>test_image</tt> is a grayscale image, not a filename.
+
+<p>
+
+You can test your code with these <a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/assignment4/digits_test">test images</a>, which can be downloaded as <a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/assignment4/digits_test.zip">a single ZIP file</a> (same as in Task 2).
+
+</p><p>
+
+To recognize the digit, you should use nearest neighbor classification (hence the initials nnc in the function name), based on the chamfer distance. Your function should measure (using your solution to Task 4) the chamfer distance between <tt>test_image</tt> and every one of the training examples provided in the <a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/assignment4/digits_training">digits_training</a> directory (again, same as in Task 2). 
+
+</p><p> 
+
+After your code measures the chamfer distance between <tt>test_image</tt> and all training examples, it should identify the training example with the smallest distance, and return the class label of that training example. If there are multiple training examples tied for the smallest distance, you can return any of the class labels of those examples, we will not care how you break ties.
+
+</p><p>
+
+It is OK to hardcode in your function the same info that you also needed to hardcode for Task 2.
+
+
+<br>
+
+</p><hr>
+
+
+<h3>
+Task 6 (15 points)
+</h3>
+
+Write a Matlab function <tt>[accuracy, confusion_matrix = nnc_chamfer_stats()</tt> that measures the classification accuracy of nearest neighbor classification using the chamfer distance. Your function should evaluate this accuracy using all 100 images in the <a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/assignment4/digits_test">digits_test</a> directory. Note that this function takes no arguments. All the information that it needs should be hardcoded, as described below.
+
+<p>
+
+It is OK for your function to hardcode the same information about training examples that you hardcode for Tasks 2 and 5. It is also OK to hardcode the information about the test examples that you needed to hardcode for Task 3.
+
+</p><p>
+
+Your function returns two values, <tt>accuracy</tt> and <tt>confusion_matrix</tt>. The instructions for those two return values are the same as in Task 3, except that (obviously) here the numbers should correspond to nearest neighbor classification using the chamfer distance.
+
+
+<br>
+
+</p><hr>
+
+<h3>How to submit</h3>
+
+Submissions are only accepted via <a href="http://elearn.uta.edu/">Blackboard</a>. Submit a file called assignment4.zip, containing the following files:
+
+<ul> 
+
+<li> The Matlab source files implementing your solutions to the programming tasks.
+
+</li><li> Any additional Matlab source files that are needed to run your code. If your code needs any code files available on the course website, please include those files with your submission.
+
+</li><li> A README.txt file containing the name and UTA ID number of the student. No other information is needed for README.txt.
+
+</li></ul>
+
+We try to automate the grading process as much as possible. Not complying precisely with the above instructions and naming conventions causes a significant waste of time during grading, and thus points will be taken off for failure to comply, and/or you may receive a request to resubmit.
+
+<p>
+
+<strong>
+Please only include source code in your submissions. Do not include data files.
+
+</strong></p><p><strong>
+
+Code must run in Matlab version 2018b.
+
+</strong></p><p><strong>
+
+The submission should be a ZIP file. Any other file format will not be accepted.
+
+</strong>
+
+
+</p><hr>
+
+<a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/index.html">CSE 4310</a> -
+<a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/index.html">Assignments</a> - Assignment 4
+
+
+
+
+</body></html>

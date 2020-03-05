@@ -1,0 +1,308 @@
+
+<!-- saved from url=(0081)http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/assignment6/ -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ <title>CSE 4310 - Assignment 6 </title>
+</head>
+
+<body>
+<h1><a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/index.html">CSE 4310</a> -
+<a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/index.html">Assignments</a> - Assignment 6</h1>
+
+<h3><a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/">List of assignment due dates.</a></h3>
+
+The assignment should be submitted via <a href="http://elearn.uta.edu/">Blackboard</a>. 
+
+
+<br>
+<br>
+
+
+<hr>
+
+<h3>
+Task 1 (15 points)
+</h3>
+
+<br>
+<img src="./CSE 4310 - Assignment 6_files/twos1.bmp"> &nbsp; 
+<img src="./CSE 4310 - Assignment 6_files/twos2.bmp"> &nbsp; 
+<img src="./CSE 4310 - Assignment 6_files/twos3.bmp"> &nbsp; 
+<img src="./CSE 4310 - Assignment 6_files/twos4.bmp"> &nbsp; 
+<img src="./CSE 4310 - Assignment 6_files/twos5.bmp"> &nbsp; 
+<img src="./CSE 4310 - Assignment 6_files/twos6.bmp"> &nbsp; 
+<img src="./CSE 4310 - Assignment 6_files/twos7.bmp"> &nbsp; 
+<img src="./CSE 4310 - Assignment 6_files/twos8.bmp"> &nbsp; 
+<img src="./CSE 4310 - Assignment 6_files/twos9.bmp"> &nbsp; 
+<img src="./CSE 4310 - Assignment 6_files/twos9.bmp"> &nbsp; 
+<img src="./CSE 4310 - Assignment 6_files/twos10.bmp"> &nbsp; <br>
+<img src="./CSE 4310 - Assignment 6_files/threes1.bmp"> &nbsp; 
+<img src="./CSE 4310 - Assignment 6_files/threes2.bmp"> &nbsp; 
+<img src="./CSE 4310 - Assignment 6_files/threes3.bmp"> &nbsp; 
+<img src="./CSE 4310 - Assignment 6_files/threes4.bmp"> &nbsp; 
+<img src="./CSE 4310 - Assignment 6_files/threes5.bmp"> &nbsp; 
+<img src="./CSE 4310 - Assignment 6_files/threes6.bmp"> &nbsp; 
+<img src="./CSE 4310 - Assignment 6_files/threes7.bmp"> &nbsp; 
+<img src="./CSE 4310 - Assignment 6_files/threes8.bmp"> &nbsp; 
+<img src="./CSE 4310 - Assignment 6_files/threes9.bmp"> &nbsp; 
+<img src="./CSE 4310 - Assignment 6_files/threes9.bmp"> &nbsp; 
+<img src="./CSE 4310 - Assignment 6_files/threes10.bmp"> &nbsp; <br>
+
+
+<small>Figure 1. A few examples from the MNIST dataset.
+</small>
+
+<p>
+
+Write a function <tt>[eigenvectors, eigenvalues] = mnist_pca(data_file, class_label, d)</tt>, that computes the top <tt>d</tt> eigenvectors of a set of images corresponding to the given <tt>class_label</tt>.
+
+</p><p>
+
+Your training data comes from a public dataset that is called the <em>MNIST dataset</em>. You can download this training data from <a href="http://vlm1.uta.edu/~athitsos/courses/cse6367_common_data/mnist.zip">this zipped file</a>, which has size about 11.8MB (the unzipped version can be <a href="http://vlm1.uta.edu/~athitsos/courses/cse6367_common_data/mnist">accessed here</a>). Unzip that file, and put the resulting directory into your Matlab path. Then, type
+</p><pre>load_mnist
+</pre>
+The above command loads 10,000 images of digits. To access, for example, the 434th image, you type the following:
+<pre>%example value for i
+i = 434; 
+
+% get the i-th image out of the set of images
+var = mnist_digits(:,:,i);
+
+% show the i-th image in a figure
+imshow(var, []);  
+
+% the label is a number between 0 and 9, telling us
+% which digit is contained in the i-th image.
+label = mnist_labels(i);  
+
+% print the label.
+disp(label); 
+</pre>
+For example, to find all images in mnist_digits that display the digit 2, you must find all indices in <tt>mnist_labels</tt> where the value "2" occurs. 
+
+<p></p>
+
+The arguments and return values for your function have these specifications:
+
+<ul>
+
+<li> Argument <tt>data_file</tt> is a filename where image data can be loaded from. In the dataset that you have been provided with, the only two data files that you can use are <tt>scrambled_mnist10000.bin</tt> (which contains 10,000 images) and <tt>scrambled_mnist60000.bin</tt> (which contains 60,000 images). Script <a href="http://vlm1.uta.edu/~athitsos/courses/cse6367_common_data/mnist/load_mnist.m">load_mnist.m</a> shows how to read data from such a file, and the instructions above show examples of how to access and display that data.
+
+</li><li> Argument <tt>class_label</tt> specifies the class label (a number between 0 and 9) of the data that you should do PCA on. Your return values (<tt>eigenvectors</tt> and <tt>eigenvalues</tt>) should be computed using the set of images stored in <tt>data_file</tt> that have the specified class label. 
+
+</li><li> Argument <tt>d</tt> specifies the number of eigenvectors and eigenvalues that your function should return.
+
+</li><li> Return value <tt>eigenvectors</tt> is a matrix with <tt>d</tt> columns (where <tt>d</tt> is the third input argument), and 784 (which is 28*28) rows. The j-th column in this matrix should be the eigenvector with the j-th highest eigenvalue.
+
+</li><li> Return value <tt>eigenvalues</tt> is a matrix with 1 column and <tt>d</tt> rows, where <tt>eigenvalues(j)</tt> is the eigenvalue corresponding to the eigenvector stored at <tt>eigenvectors(:,j)</tt>.
+
+</li></ul>
+
+
+<br>
+<br>
+
+<hr>
+
+<h3>
+Task 2 (15 points)
+</h3>
+
+Write a function <tt>class_label = pca_classifier(image, data_file, d)</tt>, whose input is a grayscale image (with uint8 values) from the MNIST dataset, and whose output is a class label between 0 and 9. The classification output should be computed based on PCA backprojection errors, computed using the top <tt>d</tt> eigenvectors of each class.
+
+<p>
+
+The second argument <tt>data_file</tt> is as in Task 1, and specifies the file where the training data for PCA is loaded from. Using this data, and given the input image, and the third argument <tt>d</tt>, your code should perform these steps:
+
+</p><ul>
+
+<li> For each class label <tt>c</tt>, compute a backprojection error by: 
+
+<ul>
+
+<li> Computing the PCA projection of the input image to <tt>d</tt> dimensions using the top <tt>d</tt> eigenvectors computed from images of class label <tt>c</tt> (as computed from your solution to Task 1).
+
+</li><li> Backprojecting the PCA projection you just computed back into the original image space, and computing the backprojection error (sum of squared differences between the backprojection and the original image).
+
+</li></ul>
+
+</li><li> Return the class label for which you got the smallest backprojection error.
+
+</li></ul>
+
+You can test your code with these <a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/assignment6/digits_test">test images</a>, which can be downloaded as <a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/assignment6/digits_test.zip">a single ZIP file</a>. 
+
+
+<br>
+<br>
+
+<hr>
+
+
+<h3>
+Task 3 (15 points)
+</h3>
+
+Write a Matlab function <tt>[accuracy, confusion_matrix] = pca_classifier_stats(data_file, d)</tt> that measures the classification accuracy of your solution for Task 2. 
+
+<p>
+
+Input argument <tt>data_file</tt> is as in Tasks 1 and 2, and specifies the file where the training data for PCA is loaded from. Input argument <tt>d</tt> specifies the number of eigenvectors (third argument to the <tt>pca_classifier</tt> function of Task 2). Your function should evaluate this accuracy using all 100 images in the <a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/assignment6/digits_test">digits_test</a> directory. Feel free to hardcode any information that you need in order to specify file locations of training data and test data.
+
+
+</p><p>
+
+Note that each filename in the test directory follows the format <tt>labelX_testY.png</tt>, where X is the class for that image, and Y is a number from 0 to 9. This way your code will know the ground truth for each test example.
+
+
+Your function returns two values. The first one is <tt>accuracy</tt>, which is a real number between 0 and 1, equal to the percentage of test images that were classified correctly. The second one is <tt>confusion_matrix</tt>, which is a 10x10 matrix where each value <tt>confusion_matrix(i,j)</tt>is a number between 0 and 1 indicating the percentage of test images of class i that were classified as belonging to class j. For the confusion matrix, treat class label "0" as class label "10". This way, the results for that class show up in the 10th row and the 10th column of the confusion matrix.
+
+</p><p>
+
+As an example, <tt>confusion_matrix(3,7)</tt> should be the percentage of test images whose real class is "3", and for which your <tt>nnc_euclidean</tt> function returned a class label of "7". Similarly, <tt>confusion_matrix(10,2)</tt> should be the percentage of test images whose real class is "0", and for which your <tt>nnc_euclidean</tt> function returned a class label of "2". 
+
+</p><p>
+
+IMPORTANT: although you are evaluating the accuracy of your solution to Task 2, it may be too slow to simply call your solution to Task 2 for each training example. If it is not too slow, you can go ahead and do that. If it is too slow (due to your solution for Task 2 computing eigenvectors and eigenvalues on the fly), you may want to write new code, that computes the top <tt>d</tt> eigenvectors for each class just once, and then reuses them for each training example. 
+
+
+<br>
+
+</p><hr>
+
+
+<h3>
+Task 4 (15 points)
+</h3>
+
+
+What value of <tt>d</tt> gives the best accuracy? What accuracy is that? Put your answer in a text or PDF file called task4.txt or task4.pdf, and include that file in your submission. 
+
+<p>
+
+To limit your experimentation, this is an acceptable approach:
+</p><ul>
+
+<li> Only consider results obtained using training data from file <tt>scrambled_mnist10000.bin</tt>.
+
+</li><li> Try all values of <tt>d</tt> in the set 10, 20, 30, 40, ..., 300, and select the value (or values) that give the best accuracy. You can use your solution for Task 3 to evaluate each of those values.
+
+</li><li> Report the value (among all values that you tried) that works the best.
+
+</li></ul>
+
+
+
+
+<br>
+<br>
+
+<hr>
+
+<h3>
+Task 5 (15 points)
+</h3>
+
+Write a function <tt>result = shape_context_feature(edge_image, row, col, r1)</tt>, that computes the shape context histogram for the pixel location specified by (row, col). The first argument is an edge image. The edge image may have values that are boolean, integer, or double. In all cases, treat any non-zero value as an edge pixel. The fourth argument, <tt>r1</tt>, is the radius of the innermost disk of the log-polar grid that you use to compute the histogram.
+
+<p> 
+
+The result should be a matrix with 5 rows and 12 columns, where result(i,j) corresponds to the region that is the intersection of the i-th ring (or the innermost disk, if i=1), and the j-th sector (j-th "pizza slice"), using the same numbering convention that we used in the slides.
+
+</p><p>
+
+IMPORTANT SPECIFICATION: You should force your result to not contain any zero values. If any value is zero because there were no edge pixels in the corresponding region, replace that value with a value of 1. This will be useful in the next tasks, where you will compute chi-squared distances, to make sure that there is no division by zero.
+
+<br>
+<br>
+
+</p><hr>
+
+
+<h3>
+Task 6 (10 points)
+</h3>
+
+Write a function <tt>result = chi_squared(sc1, sc2)</tt>, that computes the chi-squared distance between two shape context histograms <tt>sc1</tt> and <tt>sc2</tt>. Each of the two arguments is a 5x12 matrix, of the same format as the results of your solution for Task 5. You can assume that no bin in any of the histograms has a value of zero, so you don't have to worry about divisions by zero.
+
+<br>
+<br>
+
+<hr>
+
+<h3>
+Task 7 (15 points)
+</h3>
+
+Write a function <tt>result = hog_feature(image, top, left, block_size)</tt>, that computes the HOG feature vector for the specified by (top, left, block_size). That region should have pixel (top, left) as its top-left corner, and it should be a square region of size block_size x block_size pixels. You can assume that block_size is a multiple of 2. Note that here the input image is a regular grayscale image, whereas in Task 5 it was an edge image.
+
+<p>
+
+Use the following parameter values:
+
+</p><ul>
+
+<li> Use a range of angles from 0 to 180 degrees.
+
+</li><li> Use 9 bins for each orientation histogram, so that the final histogram will be 36-dimensional.
+
+</li><li> Convolve with <tt>dx = [-1, 0, 1]</tt> and dy = dx' in order to compute gradient vectors.
+
+</li><li> The weight of each pixel vote is equal to the gradient norm for that pixel.
+
+</li><li> The block should be divided to a 2x2 grid of square cells (that is why you should assume that the argument <tt>block_size</tt> is a multiple of 2).
+
+</li><li> For the normalization (step 5 of HOG computation in the slides), use option 3 (normalize by Euclidean norm, clip values to 0.2, and renormalize).
+
+</li></ul>
+
+
+
+
+
+<br>
+<br>
+
+<hr>
+
+
+<h3>How to submit</h3>
+
+Submissions are only accepted via <a href="http://elearn.uta.edu/">Blackboard</a>. Submit a file called assignment6.zip, containing the following files:
+
+<ul> 
+
+<li> The Matlab source files implementing your solutions to the programming tasks.
+
+</li><li> Any additional Matlab source files that are needed to run your code. If your code needs any code files available on the course website, please include those files with your submission.
+
+</li><li> A README.txt file containing the name and UTA ID number of the student. No other information is needed for README.txt.
+
+</li></ul>
+
+We try to automate the grading process as much as possible. Not complying precisely with the above instructions and naming conventions causes a significant waste of time during grading, and thus points will be taken off for failure to comply, and/or you may receive a request to resubmit.
+
+<p>
+
+<strong>
+Please only include source code in your submissions. Do not include data files.
+
+</strong></p><p><strong>
+
+Code must run in Matlab version 2018b.
+
+</strong></p><p><strong>
+
+The submission should be a ZIP file. Any other file format will not be accepted.
+
+</strong>
+
+
+</p><hr>
+
+<a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/index.html">CSE 4310</a> -
+<a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/index.html">Assignments</a> - Assignment 6
+
+
+
+
+</body></html>

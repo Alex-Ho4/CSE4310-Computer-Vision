@@ -1,0 +1,204 @@
+
+<!-- saved from url=(0081)http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/assignment7/ -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ <title>CSE 4310 - Assignment 7 </title>
+</head>
+
+<body>
+<h1><a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/index.html">CSE 4310</a> -
+<a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/index.html">Assignments</a> - Assignment 7</h1>
+
+<h3><a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/">List of assignment due dates.</a></h3>
+
+The assignment should be submitted via <a href="http://elearn.uta.edu/">Blackboard</a>. 
+
+
+<br>
+
+<hr>
+
+In this assignment, you will implement gesture recognition methods based on motion energy images (MEI) and dynamic time warping (DTW). You will use 
+training and test examples from 
+<a href="http://vlm1.uta.edu/~athitsos/courses/cse6367_common_data/gesture_videos">this directory</a>. 
+You can also download this directory as a single <a href="http://vlm1.uta.edu/~athitsos/courses/cse6367_common_data/gesture_videos.zip">ZIP file</a>. The zipped file about 900MB. 
+
+<p>
+
+To read an entire video file, use the <a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/lectures/all_code/00_images/read_video_frames.m">read_video_frames</a> function. The result is a 4D array, where <tt>result(:,:,:,43)</tt>, for example, gives you the RGB image for frame 43.
+
+</p><p>
+
+There are four videos in our dataset, but you only need to use two of them (you will use the videos with the word "model" in their name). You are free to use the other two videos for test purposes, if you wish. For every video there is a corresponding text file, that specifies for every gesture in that video the class, start frame, and end frame of the gesture.
+
+
+</p><p>
+</p><hr>
+
+<h3>
+Task 1 (15 points)
+</h3>
+
+Implement a function <tt>result = mei_image(filename, start_frame, end_frame)</tt>, that takes as input three arguments: the filename where an AVI video is saved, and the start and end frames of the gesture we want to recognize. The function returns as output the motion energy image corresponding to the gesture. The motion energy image is a 2D array of floating point numbers.
+
+
+<br>
+
+<hr>
+
+<h3>
+Task 2 (15 points)
+</h3>
+
+Implement a function <tt>class_label = mei_classifier(filename, start_frame, end_frame)</tt>, that takes as input three arguments: the filename where an AVI video is saved, and the start and end frames of the gesture we want to recognize. The function returns as output a number between 0 and 9, representing the classification of the gesture using motion energy images. 
+
+<p>
+
+We will test your code with gestures from the <a href="http://vlm1.uta.edu/~athitsos/courses/cse6367_common_data/gesture_videos/digits_model_joni_ex3.avi">digits_model_joni_ex3.avi</a> video file. The training examples that your code should use should come from video file <a href="http://vlm1.uta.edu/~athitsos/courses/cse6367_common_data/gesture_videos/digits_model_quan_ex3.avi.avi">digits_model_quan_ex3.avi</a>.
+
+</p><p>
+
+The motion energy image of the gesture we want to classify should be computed on the fly. For the training examples, your function can compute the MEI images on the fly, or you can use your solution to Task 1 to precompute those images and save them to a file. However, if you save those MEI images to a file, you should submit that file as a part of your submission.
+
+
+
+</p><hr>
+
+
+<h3>
+Task 3 (15 points)
+</h3>
+
+Implement a function <tt>trajectory = green_hand_trajectory(filename, start_frame, end_frame)</tt>, that takes as input three arguments: the filename where an AVI video is saved, and the start and end frames of the gesture we want to recognize. We assume that the specified AVI file contains training gestures where the user wears a green glove on the hand, to make hand detection easy. The function returns as output an Nx2 matrix (N rows, 2 columns), where N is the number of frames of the gesture (end_frame - start_frame + 1). In that Nx2 matrix, row i should contain the location of the hand in the i-th frame (the x coordinate in column 1, the y coordinate in column 2). You should use the green_hands.m function from <a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/lectures/all_code/17_gestures/">this code directory</a> to detect the hand location for each frame.
+
+
+<p>
+
+For the <tt>green_hands</tt> function, for the third argument <tt>hand_size</tt> you should use value <tt>[40,30]</tt>, to specify that we are looking for hands that are of size 40 rows x 30 columns. Note that the <tt>green_hands</tt> function returns the center of the hand bounding box as its third output value.
+
+<br>
+
+</p><hr>
+
+
+<h3>
+Task 4 (15 points)
+</h3>
+
+
+Implement a function <tt>class_label = dtw_classifier_green(filename, start_frame, end_frame)</tt>, that takes as input three arguments: the filename where an AVI video is saved, and the start and end frames of the gesture we want to recognize. The function returns as output a number between 0 and 9, representing the classification of the gesture using dynamic time warping. 
+
+<p>
+
+
+</p><p>
+
+We will test your code with gestures from the <a href="http://vlm1.uta.edu/~athitsos/courses/cse6367_common_data/gesture_videos/digits_model_joni_ex3.avi">digits_model_joni_ex3.avi</a> video file. The training examples that your code should use should come from video file <a href="http://vlm1.uta.edu/~athitsos/courses/cse6367_common_data/gesture_videos/digits_model_quan_ex3.avi.avi">digits_model_quan_ex3.avi</a>.
+
+</p><p>
+
+The hand trajectory of the gesture we want to classify should be computed on the fly, using the green_hands.m function from <a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/lectures/all_code/17_gestures/">this code directory</a> to detect the hand location for each frame.
+. For the training examples, your function can compute the hand trajectories on the fly, or you can use your solution to Task 3 to precompute those trajectories and save them to a file. However, if you save those trajectories to a file, you should submit that file as a part of your submission.
+
+
+<br>
+<br>
+
+</p><hr>
+
+<h3>
+Task 5 (20 points)
+</h3>
+
+Implement the gesture spotting version of DTW: implement a function <tt>result = dtw_spot(input_video, class_thresholds)</tt>, that takes as input a filename where an AVI video is stored. The function returns a matrix of size Px3, where P is determined by your algorithm. This matrix, at each row, contains three numbers: [start_frame, end_frame, gesture_class]. In other words, for each gesture that occurs in the video, according to your algorithm, you should indicate the start frame, end frame, and gesture class for that gesture.
+
+<p> 
+
+Argument <tt>class_thresholds</tt> is a 10x1 (or 1x10) matrix of thresholds, specifying, for each class, a recognition threshold. When, for a specific frame of the input video, the matching score with the training example of that class is under the recognition threshold, then your function can "recognize" that gesture.
+
+</p><p>
+
+As in previous tasks, we will test your code with gestures from the <a href="http://vlm1.uta.edu/~athitsos/courses/cse6367_common_data/gesture_videos/digits_model_joni_ex3.avi">digits_model_joni_ex3.avi</a> video file. The training examples that your code should use should come from video file <a href="http://vlm1.uta.edu/~athitsos/courses/cse6367_common_data/gesture_videos/digits_model_quan_ex3.avi.avi">digits_model_quan_ex3.avi</a>.
+
+</p><p>
+
+The hand trajectory for each frame of the entire input video should be computed on the fly, using the green_hands.m function from <a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/lectures/all_code/17_gestures/">this code directory</a> to detect the hand location for each frame.
+. For the training examples, your function can compute the hand trajectories on the fly, or you can use your solution to Task 3 to precompute those trajectories and save them to a file. However, if you save those trajectories to a file, you should submit that file as a part of your submission.
+
+</p><p>
+
+As part of your solution, you should somehow address the subgesture problem. In a file called spotting.txt or spotting.pdf, you should describe how you addressed this problem.
+
+<br>
+
+</p><hr>
+
+
+<h3>
+Task 6 (20 points)
+</h3>
+
+Implement a function <tt>[tp, fp, fn] = dtw_spot_accuracy(ground_truth, gestures, iou_threshold)</tt>, that evaluates gesture spotting accuracy. This function takes the following inputs:
+
+<ul>
+
+<li> <tt>ground_truth</tt> is a filename containing the ground truth for a gesture video (such as <a href="http://vlm1.uta.edu/~athitsos/courses/cse6367_common_data/gesture_videos/start_end_frames_model_joni_ex3.txt">start_end_frames_model_joni_ex3.txt</a>).
+
+</li><li> <tt>gestures</tt> is a Px3 matrix <tt>gestures</tt> which has the same format as the output of your <tt>dtw_spot</tt> function from the previous class: each row has the format [start_frame, end_frame, gesture_class].
+
+</li><li> <tt>iou_threshold</tt> is the intersection-over-union threshold you should use.
+
+</li></ul>
+
+The function returns three numbers: <tt>tp</tt> is the number of true positives, <tt>fp</tt> is the number of false positives, and <tt>fn</tt> is the number of false negatives.
+
+
+
+<br>
+
+<hr>
+
+<h3>How to submit</h3>
+
+Submissions are only accepted via <a href="http://elearn.uta.edu/">Blackboard</a>. Submit a file called assignment7.zip, containing the following files:
+
+<ul> 
+
+<li> The Matlab source files implementing your solutions to the programming tasks.
+
+</li><li> The spotting.txt or spotting.pdf file explaining how you address the subgesture problem for task 5.
+
+</li><li> Any additional Matlab source files that are needed to run your code. If your code needs any code files available on the course website, please include those files with your submission.
+
+</li><li> Any additional files containing precomputed data (such as MEI images, hand trajectories) that your code uses.
+
+</li><li> A README.txt file containing the name and UTA ID number of the student. No other information is needed for README.txt.
+
+</li></ul>
+
+We try to automate the grading process as much as possible. Not complying precisely with the above instructions and naming conventions causes a significant waste of time during grading, and thus points will be taken off for failure to comply, and/or you may receive a request to resubmit.
+
+<p>
+
+<strong>
+Please only include the requested files in your submission. Do not include additional files. Submissions may be penalized for including bulky data files that you are not requested to include.
+
+</strong></p><p><strong>
+
+Code must run in Matlab version 2018b.
+
+</strong></p><p><strong>
+
+The submission should be a ZIP file. Any other file format will not be accepted.
+
+</strong>
+
+
+</p><hr>
+
+<a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/index.html">CSE 4310</a> -
+<a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/index.html">Assignments</a> - Assignment 7
+
+
+
+
+</body></html>

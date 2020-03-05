@@ -1,0 +1,237 @@
+
+<!-- saved from url=(0081)http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/assignment2/ -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ <title>CSE 4310 - Assignment 2 </title>
+</head>
+
+<body>
+<h1><a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/index.html">CSE 4310</a> -
+<a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/index.html">Assignments</a> - Assignment 2</h1>
+
+<h3><a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/">List of assignment due dates.</a></h3>
+
+The assignment should be submitted via <a href="http://elearn.uta.edu/">Blackboard</a>. 
+
+<p>
+
+<strong>Note:</strong> All images shown in the figures below can be found in <a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/assignment2/data">this folder</a>, and they can be downloaded as a single ZIP file from <a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/assignment2/data.zip">data.zip</a>.
+
+</p><hr>
+
+
+<br>
+
+<h3>
+Task 1 (35 points)
+</h3>
+<p>
+<img border="3" width="240" src="./CSE 4310 - Assignment 2_files/zebra_with_holes.gif"> 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<img border="3" width="240" src="./CSE 4310 - Assignment 2_files/zebra_without_holes.gif"><br>
+<img border="3" width="240" src="./CSE 4310 - Assignment 2_files/simple_with_holes.gif"> 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<img border="3" width="240" src="./CSE 4310 - Assignment 2_files/simple_without_holes.gif"><br>
+
+Figure 1: Example inputs and outputs of the remove_holes function.
+
+</p><p>
+
+Write a Matlab function that takes in as argument a binary image A
+(not a filename), and returns another binary image B, which is the
+result of removing all holes from A. We will use this (somewhat
+artificial) definition: A hole is a black 4-connected component that
+does not include pixel (1,1). If pixel (1,1) in A is black, then we use
+the term ``background'' for the 4-connected component of all black pixels
+to which pixel (1, 1) belongs. If pixel (1,1) is white, 
+then the result of your function
+should be an all-white image.
+
+</p><p>
+
+You should assume that the input image is a grayscale image (single-channel, not containing three RGB channels), whose values are of type uint8. You should further assume that pixels in the input image can only have two values: 0 (black) or 255 (white). Your function will only be tested on images that satisfy these assumptions. The output image should also be a single-channel grayscale image, whose values are of type uint8. The result should satisfy these specs:
+
+</p><ul>
+<li> If a pixel is white in the input image, it should be white in the result image.
+</li><li> If a pixel belongs to a hole in the input image (according to the definition of a hole given above), it should be white in the result image.
+</li><li> If a pixel is black in the input image and it belongs to the background (according to the definition of "background" given above), that pixel should be black in the result image.
+</li></ul>
+
+<p>
+
+Your function should be named <tt>remove_holes</tt>, and should take a single argument, i.e., the binary image that you want to process. 
+
+</p><pre>&gt;&gt; result = remove_holes(my_image);
+</pre>
+
+<p>
+
+The key idea that makes it easy to identify holes is this: if C is the negation of A (<tt>C = ~A</tt>, in Matlab), a hole in A is a white connected component in C. The background in A also becomes a white connected component in C, but the label of the background (as returned by <tt>bwlabel(C, 4)</tt>) will be different than the label of any hole.
+
+</p><p>
+
+The specifications for this function are general and mathematical in nature. Therefore, your function should work for any image, not just the examples provided above. My solution for this task is 16 lines of code. Shorter or longer solutions are also possible.
+
+<br><br><br>
+
+
+
+
+
+</p><hr>
+
+<br>
+
+<h3>
+Task 2 (35 points)
+</h3>
+<p>
+<table cellpadding="3" border="1"> 
+<tbody><tr>
+<td> original image</td>
+<td><img border="3" src="./CSE 4310 - Assignment 2_files/soccer_field4.jpg"></td>
+</tr>
+<tr>
+<td>image showing area<br>of soccer field</td>
+<td><img border="3" src="./CSE 4310 - Assignment 2_files/soccer_field_field.gif"></td>
+</tr>
+<tr>
+<td>image showing locations<br>of red team players </td>
+<td><img border="3" src="./CSE 4310 - Assignment 2_files/red_players.gif"></td>
+</tr>
+<tr>
+<td>image showing locations<br>of blue team players</td>
+<td><img border="3" src="./CSE 4310 - Assignment 2_files/blue_players.gif"></td>
+</tr>
+</tbody></table>
+
+</p><p>
+
+Write a Matlab function that takes as input the image of a soccer field that is shown above, and produces three images (as shown in the figure above), that illustrate:
+</p><ul>
+<li>In Figure 1: the area of the soccer field.
+</li><li>In Figure 2: the locations of the red players.
+</li><li>In Figure 3: the locations of the blue players.
+</li></ul>
+
+Your function should be named <tt>soccer_analysis</tt>, and should take a single argument, the soccer field image that you wish to analyze. <strong> Your function will only be tested on the soccer field image shown above.</strong> That image is a three-channel RGB image, whose values are of type uint8. As long as your solution works well on that image, you will receive full credit.
+
+<pre>&gt;&gt; soccer_analysis(my_image);
+</pre>
+
+<p>
+
+The function does not return any values, it simply generate the three figures specified above. To generate multiple figures you can use something like:
+</p><pre>figure(1); imshow(field);
+figure(2); imshow(red_players);
+figure(3); imshow(green_players);
+</pre>
+
+<p>
+
+Your solution should just consist of images like the ones displayed above. You do not need to output anything else (such as number of players, bounding boxes, or anything like that). You are free to use any thresholds you like, and your solution only needs to work on this image. Your results do not need to match the results shown above pixel-by-pixel, but they should be mostly similar. The results shown above identify correctly the regions of eight red players and eleven blue players.
+
+</p><p>
+
+My solution for this task was 16 lines of code (in addition to code written for task 1). Shorter or longer solutions are also possible.
+
+
+<br>
+
+
+
+
+</p><hr>
+
+<h3>
+Task 3 (30 points)
+</h3>
+
+<p>
+<table cellpadding="3" border="1"> 
+<tbody><tr>
+<td> original image</td>
+<td><img border="3" src="./CSE 4310 - Assignment 2_files/ocean2.jpg"></td>
+</tr>
+<tr>
+<td>image showing the sky area</td>
+<td><img border="3" src="./CSE 4310 - Assignment 2_files/sky.gif"></td>
+</tr>
+<tr>
+<td>image showing the ocean area</td>
+<td><img border="3" src="./CSE 4310 - Assignment 2_files/ocean.gif"></td>
+</tr>
+</tbody></table>
+
+</p><p>
+
+
+Write a Matlab function that takes as input the original image shown above, and produces two images (as shown in the figure above), that illustrate:
+</p><ul>
+<li>In Figure 1: the sky area.
+</li><li>In Figure 2: the ocean area.
+</li></ul>
+
+Your function should be named <tt>ocean_segmentation</tt>, and should take a single argument, which will be the original image shown above. The input image will be a single-channel grayscale image, whose values are of type uint8. <strong>Your function will only be tested on the image shown above.</strong> As long as your solution works well on that image, you will receive full credit.
+
+<pre>&gt;&gt; ocean_segmentation(my_image);
+</pre>
+
+
+<p> 
+
+My solution for this task was 14 lines of code (in addition to code written for task 1). Shorter or longer solutions are possible. Your result images are not expected to be identical pixel-by-pixel to the results shown above, but they should be mostly similar.
+
+</p><hr>
+
+<h3>Things to note</h3>
+
+<ul>
+<li>Input images for tasks 2 and 3, and example input and output images for all tasks can be found at the <a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/assignment2/data">data</a> directory, and can also be <a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/assignment2/data.zip">downloaded as a zip file</a>.
+</li><li>For task 1, the solution should work for any binary image.
+</li><li>There is no single unique answer for tasks 2 and 3. Just make sure your solution looks reasonable.
+</li><li>For tasks 2 and 3, your solution only needs to work for the input image specified for each task.
+</li><li>For tasks 2 and 3, feel free to combine any morphological operations, convolutions, thresholding, or any other computer vision-based techniques you can think of to obtain the desired result.
+</li></ul>
+
+
+
+<h3>How to submit</h3>
+
+Submissions are only accepted via <a href="http://elearn.uta.edu/">Blackboard</a>. Submit a file called assignment2.zip, containing the following files:
+
+<ul> 
+
+<li> The Matlab source files implementing your solutions to the programming tasks.
+
+</li><li> Any additional Matlab source files that are needed to run your code. If your code needs any code files available on the course website, please include those files with your submission.
+
+</li><li> A README.txt file containing the name and UTA ID number of the student. No other information is needed for README.txt.
+
+</li></ul>
+
+We try to automate the grading process as much as possible. Not complying precisely with the above instructions and naming conventions causes a significant waste of time during grading, and thus points will be taken off for failure to comply, and/or you may receive a request to resubmit.
+
+<p>
+
+<strong>
+Please only include source code in your submissions. Do not include data files.
+
+</strong></p><p><strong>
+
+Code must run in Matlab version 2018b.
+
+</strong></p><p><strong>
+
+The submission should be a ZIP file. Any other file format will not be accepted.
+
+</strong>
+
+
+</p><hr>
+
+<a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/index.html">CSE 4310</a> -
+<a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/index.html">Assignments</a> - Assignment 2
+
+
+
+</body></html>

@@ -1,0 +1,1 @@
+I tried to address the subgesture problem by getting the gesture with the lowest score. If there was a tie due to another subgesture, I calculated which one had the longest node length and recognized it. The longest path is the one that has the most amount of test nodes corresponding to the most amount of training nodes.

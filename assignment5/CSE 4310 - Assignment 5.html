@@ -1,0 +1,316 @@
+
+<!-- saved from url=(0081)http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/assignment5/ -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ <title>CSE 4310 - Assignment 5 </title>
+</head>
+
+<body>
+<h1><a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/index.html">CSE 4310</a> -
+<a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/index.html">Assignments</a> - Assignment 5</h1>
+
+<h3><a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/">List of assignment due dates.</a></h3>
+
+The assignment should be submitted via <a href="http://elearn.uta.edu/">Blackboard</a>. 
+
+
+<br>
+<br>
+
+<hr>
+
+<h3>
+Description of Face Detection Package for Tasks 1 and 2.
+</h3>
+
+
+The directory <a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/assignment5/face_detection">face_detection</a> contains images and code that you will use in Task 1 and Task 2 for face detection evaluation. The entire zipped directory can be downloaded as ZIP file <a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/assignment5/face_detection.zip">face_detection.zip</a>.
+
+<p>
+
+The <a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/assignment5/face_detection/images">face_detection/images</a> subdirectory contains 39 images, that were selected from the public <a href="http://mmlab.ie.cuhk.edu.hk/projects/WIDERFace/">WIDERFace dataset</a>. File <a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/assignment5/face_detection/ground_truth.txt">face_detection/ground_truth.txt</a> provides the ground truth on face locations for those images. For each image, the ground truth file contains the following information:
+
+</p><ul>
+<li> A line specifying the directory and filename where that image is stored. For this assignment, you should ignore the directory, since all 39 images are stored in the same directory. For example, consider the first line in the file:
+<pre>0--Parade/0_Parade_marchingband_1_641.jpg
+</pre>
+From this line, we ignore the "0--Parade/" part, which specifies a directory. We keep the "0_Parade_marchingband_1_641.jpg" part, which is the image filename.
+
+</li><li> A line specifying the number of faces in that image. For example, for the "0_Parade_marchingband_1_641.jpg", there is one face.
+
+</li><li> For each face in the image, a line specifying the bounding box for that face. For example, for the "0_Parade_marchingband_1_641.jpg" image, the line
+<pre>349 179 171 221 0 0 0 0 0 0 
+</pre>
+specifies a bounding box whose top-left corner is at column 349 and row 179, the width is 171 pixels, and the height is 221 pixels. We only care about those four numbers. The line has six additional numbers, that we don't care about.
+</li></ul>
+
+You are provided with a Matlab function <a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/assignment5/face_detection/read_ground_truth.m">read_ground_truth.m</a> which reads this ground truth file. Notice that for bounding boxes, this function converts each bounding box to the format [top bottom left right], which is different than the format used in the text file.
+
+<p>
+
+You are also provided with a Matlab function <a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/assignment5/face_detection/template_detector.m">template_detector.m</a>, which implements a multiscale template detector based on normalized cross-correlation scores. The fourth argument to that function is the detection threshold. Any normalized cross-correlation scores below the threshold will NOT be included in the results. Note that scores above the threshold may still not be included in the results, if they are suppressed by nearby scores that are even higher.
+
+<br>
+<br>
+
+</p><hr>
+
+<h3>
+Task 1 (20 points)
+</h3>
+
+
+The code in the <a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/assignment5/face_detection">face_detection</a> directory provides a Matlab function <a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/assignment5/face_detection/detection_accuracy.m">detection_accuracy.m</a>, which you will need to complete. This function takes the following arguments:
+<ul>
+<li> <tt>ground_truth_file</tt>. Here we will just use the <a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/assignment5/face_detection/ground_truth.txt">face_detection/ground_truth.txt</a> file that we have already described.
+</li><li> <tt>template</tt>. This is an image (not a filename) of a face template. Examples of face templates that you can use are available in files <a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/assignment5/face_detection/average_face.png">average_face.png</a> and <a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/assignment5/face_detection/average_face_cropped.png">average_face_cropped.png</a>
+</li><li> <tt>scales</tt>: an array specifying the scales at which we will do template search. You can create such an array using the <a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/assignment5/face_detection/make_scales_array.m">make_scales_array.m</a> function.
+</li><li> <tt>detection_thr</tt>. This is the detection threshold that gets passed to the <tt>template_detector</tt> function.
+</li><li> <tt>iou_thr</tt>. This is the intersection-over-union (IoU) threshold that you will use to decide if a detection result is correct or not, and whether a face was successfully detected or not.
+</li></ul>
+
+Function <tt>detection_accuracy</tt> has the following return values:
+<ul>
+<li> <tt>tp</tt>: This is the total number of true positives in the dataset. A detection result on an image is counted as a true positive if it has an IoU score ≥ <tt>iou_thr</tt> with at least one real face location in that image (where real face locations are obtained from the ground truth).
+</li><li> <tt>fp</tt>: This is the total number of false positives in the dataset. A detection result on an image is counted as a false positive if it not a true positive.
+</li><li> <tt>fn</tt>: A real face location is counted as a false negative if it has an IoU score &lt; <tt>iou_thr</tt> with all detection results for that image. In other words, if the ground truth specifies that there is a face at a specific location, and none of the detection results has a sufficiently high IoU score with that location, then that location is counted as a false negative. Intuitively, you can thin that any face location that is specified in the ground truth will produce either a true positive result or a false negative result.
+</li></ul>
+
+To complete the <tt>detection_accuracy</tt> function and make it work, you need to implement a <tt>check_boxes</tt> function. This <tt>check_boxes</tt> function gets called at line 22 of the <tt>detection_accuracy</tt> function, and is used to determine the number of true positives, false positives, and false negatives corresponding to the detection results that we got for some image. The <tt>check_boxes</tt> function has the following specs:
+<ul>
+<li>Input arguments:
+<ul>
+<li> <tt>boxes</tt>: This is a matrix of N rows and 6 columns, where each row specifies the bounding box of a detection result. Each row has the format [top, bottom, left, right, score, scale]. In this function, the score and scale do not matter.
+</li><li> <tt>ground_truth</tt>: This is a matrix of M rows and 4 columns, where each row specifies the bounding box of a real face location that is specified by the ground truth. Each row has the format [top, bottom, left, right].
+</li><li> <tt>iou_thr</tt>: The IoU threshold that should be used to determine if a detection result matches a ground truth location or not.
+</li></ul>
+</li><li>Return values:
+<ul>
+<li> <tt>tp</tt>: The number of true positives in the detection results.
+</li><li> <tt>fp</tt>: The number of false positives in the detection results.
+</li><li> <tt>fn</tt>: The number of false negatives in the ground truth locations.
+</li></ul>
+</li></ul>
+
+As a reminder, examples of face templates that you can use are available in files <a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/assignment5/face_detection/average_face.png">average_face.png</a> and <a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/assignment5/face_detection/average_face_cropped.png">average_face_cropped.png</a>.
+
+<p>
+
+On my desktop, it takes about 60-70 seconds to run the <tt>detection_accuracy</tt> function on the whole 39 images, when I set the argument <tt>scales</tt> equal to <tt>make_scales_array(1, 5, 1.1)</tt>. For quicker testing, you can edit line 11 in the <tt>detection_accuracy</tt> function, so that the for loop does not go through the entire dataset. 
+
+
+<br>
+<br>
+
+</p><hr>
+
+<h3>
+Task 2 (10 points)
+</h3>
+
+Suppose that you are going to use our template detector for a face detection software library that you will sell to customers. Your customers will be programmers, so they will be able to call the template detector with different detection thresholds. You need to decide if your face detection should use the template in file <a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/assignment5/face_detection/average_face.png">average_face.png</a> or the template in file <a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/assignment5/face_detection/average_face_cropped.png">average_face_cropped.png</a>. Describe in text what choice you will make, and provide the justification for it. Your choice needs to be based on results that you get on the dataset we are using for Task 1. You do not have the option to include both templates, you need to choose one of them.
+
+<p>
+
+IMPORTANT: in order to get some more uniformity over possible answers, your answer should be based only on detection results using scales produced by <tt>make_scales_array(1, 5, 1.1)</tt>.
+
+</p><p>
+
+Put your answer in a text or PDF file called task2.txt or task2.pdf, and include that file in your assignment5.zip submission.
+
+
+<br>
+<br>
+
+</p><hr>
+
+
+<h3>
+Task 3 (25 points)
+</h3>
+
+<table>
+<tbody><tr>
+<td>
+<img src="./CSE 4310 - Assignment 5_files/c1_img1.png">
+</td>
+<td>
+<img src="./CSE 4310 - Assignment 5_files/c2_img1.png">
+</td>
+</tr>
+<tr>
+<td>
+<center>
+Image <a href="./CSE 4310 - Assignment 5_files/c1_img1.png">c1_img1.png</a>
+</center>
+</td>
+<td>
+<center>
+Image <a href="./CSE 4310 - Assignment 5_files/c2_img1.png">c2_img1.png</a>
+</center>
+</td>
+</tr>
+</tbody></table>
+
+<p>
+
+Write a function <tt>camera_matrix = perspective_calibration(correspondences)</tt>, that returns the 3x4 camera matrix that maps 3D world coordinates to 2D pixel coordinates.
+
+The input argument <tt>correspondences</tt> is an Nx5 matrix of double values. The n-th row of this matrix is of the format [x, y, z, u, v], where:
+
+</p><ul>
+<li> (x, y, z) are the 3D co-ordinates of some point.
+</li><li> (u, v) are the pixel coordinates where that point projects to in the image. Note that u is the horizontal coordinate (column number) and v is the vertical coordinate (row number).
+</li></ul>
+
+Examples of correspondences that you can use are stored in files <a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/assignment5/calibration/img1_wc1.txt">img1_wc1.txt</a> (corresponding to image c1_img1.png shown above) and <a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/assignment5/calibration/img1_wc2.txt">img1_wc2.txt</a> (corresponding to image c2_img1.png shown above). Each of these two files shows the 3D world coordinates and 2D pixel locations of the 28 visible cube vertices visible on the corresponding image that is shown above.
+
+<p>
+
+IMPORTANT: the function should take as input a matrix (a 2D array), and NOT a filename. If you have file <a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/assignment5/calibration/img1_wc1.txt">img1_wc1.txt</a> on your current directory, and you want to load the data from that file to a matrix called <tt>correspondences</tt>, just type:
+
+</p><pre>correspondences = load('img1_wc1.txt')
+</pre>
+
+
+<br>
+
+<hr>
+
+
+<h3>
+Task 4 (30 points)
+</h3>
+
+
+<table>
+<tbody><tr>
+<td>
+<img src="./CSE 4310 - Assignment 5_files/c1_img2.png">
+</td>
+<td>
+<img src="./CSE 4310 - Assignment 5_files/c2_img2.png">
+</td>
+</tr>
+<tr>
+<td>
+<center>
+Image <a href="./CSE 4310 - Assignment 5_files/c1_img2.png">c1_img2.png</a>
+</center>
+</td>
+<td>
+<center>
+Image <a href="./CSE 4310 - Assignment 5_files/c2_img2.png">c2_img2.png</a>
+</center>
+</td>
+</tr>
+</tbody></table>
+
+<p>
+
+
+Write a function <tt>result = estimate_3D_point(c1, c2, u1, v1, u2, v2)</tt> that estimates the 3D world coordinates of a point, given two camera matrices and given the locations where that point projects on those two cameras.
+
+</p><p>
+
+Argument <tt>c1</tt> is the 3x4 camera matrix of the first camera, and argument <tt>c2</tt> is 3x4 camera matrix of the second camera.
+
+</p><p>
+
+Argument <tt>u1</tt> is the horizontal coordinate (column number) of the pixel where the 3D point projects in the first camera. Argument <tt>v1</tt> is the vertical coordinate (row number) of the pixel where the 3D point projects in the first camera. Similarly, arguments <tt>u2</tt> and <tt>v2</tt> are the horizontal and vertical coordinates of the pixel where the 3D point projects in the second camera. 
+
+</p><p>
+
+The result is a 3x1 column vector, whose format is [x, y, z]', where (x, y, z) are the 3D coordinates we are looking for.
+
+</p><p>
+
+Some example data to experiment with are stored in file <a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/assignment5/calibration/img2_c1c2.txt">img2_c1c2.txt</a>. Each row on that file is of the form [u1, v1, u2, v2], where (u1, v1) is a pixel location on image c1_img2.png shown above, and (u2, v2) is the corresponding pixel location on image c1_img2.png shown above. The 21 lines of that file contain the correspondences for each of the 21 visible cube vertices on those two images. To test your code, you can do these steps:
+
+</p><ul>
+
+<li> Use your solution to Task 3 and the correspondences in file <a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/assignment5/calibration/img1_wc1.txt">img1_wc1.txt</a> to compute the camera matrix for the first camera.
+
+</li><li> Use your solution to Task 3 and the correspondences in file <a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/assignment5/calibration/img1_wc2.txt">img1_wc2.txt</a> to compute the camera matrix for the second camera.
+
+</li><li> Call your function using the two calibration matrices you just computed, and using one line from file <a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/assignment5/calibration/img2_c1c2.txt">img2_c1c2.txt</a> to get your <tt>u1, v1, u2, v2</tt> values.
+
+</li></ul>
+
+For the 21 points described in <a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/assignment5/calibration/img2_c1c2.txt">img2_c1c2.txt</a>, the correct 3D locations can be found in files <a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/assignment5/calibration/img2_wc1.txt">img2_wc1.txt</a> and <a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/assignment5/calibration/img2_wc2.txt">img2_wc2.txt</a>. Your result will not be identical to those locations, but it should be reasonably close if your solution is correct.
+
+
+
+
+
+
+
+
+
+<br>
+<br>
+
+<hr>
+
+<h3>
+Task 5 (15 points)
+</h3>
+
+Write a function <tt>result = pinhole_location(correspondences)</tt>, that estimates the pinhole location of a camera. 
+
+<p> 
+
+The input argument <tt>correspondences</tt> is of exactly the same format as in Task 3. As in Task 3, it should be an Nx5 matrix, NOT a filename. Each line of this argument (as in Task 3) is of the format [x, y, z, u, v], and describes the correspondence between a 3D world location and a 2D pixel.
+
+</p><p>
+
+The output should be a 3x1 column vector of the format [x, y, z]', showing the 3D location of the pinhole of the camera.
+
+
+
+
+<br>
+<br>
+
+</p><hr>
+
+
+<h3>How to submit</h3>
+
+Submissions are only accepted via <a href="http://elearn.uta.edu/">Blackboard</a>. Submit a file called assignment5.zip, containing the following files:
+
+<ul> 
+
+<li> The Matlab source files implementing your solutions to the programming tasks.
+
+</li><li> Any additional Matlab source files that are needed to run your code. If your code needs any code files available on the course website, please include those files with your submission.
+
+</li><li> A README.txt file containing the name and UTA ID number of the student. No other information is needed for README.txt.
+
+</li></ul>
+
+We try to automate the grading process as much as possible. Not complying precisely with the above instructions and naming conventions causes a significant waste of time during grading, and thus points will be taken off for failure to comply, and/or you may receive a request to resubmit.
+
+<p>
+
+<strong>
+Please only include source code in your submissions. Do not include data files.
+
+</strong></p><p><strong>
+
+Code must run in Matlab version 2018b.
+
+</strong></p><p><strong>
+
+The submission should be a ZIP file. Any other file format will not be accepted.
+
+</strong>
+
+
+</p><hr>
+
+<a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/index.html">CSE 4310</a> -
+<a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/index.html">Assignments</a> - Assignment 5
+
+
+
+</body></html>

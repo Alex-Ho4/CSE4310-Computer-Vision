@@ -1,0 +1,167 @@
+
+<!-- saved from url=(0081)http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/assignment3/ -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ <title>CSE 4310 - Assignment 3 </title>
+</head>
+
+<body>
+<h1><a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/index.html">CSE 4310</a> -
+<a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/index.html">Assignments</a> - Assignment 3</h1>
+
+<h3><a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/">List of assignment due dates.</a></h3>
+
+The assignment should be submitted via <a href="http://elearn.uta.edu/">Blackboard</a>. 
+
+<p>
+
+<br>
+
+</p><hr>
+
+<br>
+
+<h3>
+Task 1 (40 points)
+</h3>
+
+
+Write a Matlab function <tt>votes = oriented_hough(grayscale, thetas, rhos, thr1, thr2)</tt>that takes in as argument a grayscale image A (not a filename), and returns the result of performing the Hough Transform for lines. The specific variant of the Hough Transform that you should implement is the one that takes edge orientations into account, as described in slides 61-70 of the <a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/lectures/05_hough.pdf">Hough Transform slides</a>.
+
+<p>
+
+The image that is passed in to your function is the first argument, <tt>grayscale</tt>. It is important to emphasize that <tt>grayscale</tt> is a grayscale image (single-channel image, values of type uint8 between 0 and 255) and NOT an edge image. To obtain an edge image, you should use the <a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/lectures/all_code/00_detection/canny.m">canny</a> function that is posted on the course website. You must use <tt>thr1</tt> as the second argument when you call the <tt>canny</tt> function.
+
+</p><p>
+
+Argument <tt>thetas</tt> is a one-dimensional array of angles, given in degrees. This arguments specifies the discrete theta values that you should use in the voting. Similarly, argument <tt>rhos</tt> is a one-dimensional array of rho values that you should use in the voting.
+
+</p><p> 
+
+The result <tt>votes</tt> is a matrix, whose rows is equal to the number of values in <tt>rhos</tt> and whose columns is equal to the number of values in <tt>thetas</tt>. In <tt>votes(i,j)</tt> your function should store the number of votes for the line with parameters <tt>rho = rhos(i)</tt> and <tt>theta = thetas(j)</tt>.
+
+</p><p>
+
+To compute the gradient orientation at each pixel location (i,j), you obviously need to compute the gradient vector (dy, dx) for that location. You should compute dy values by convolving <tt>grayscale</tt> with filter <tt>dy_filter = [-1, 0, 1]'</tt> and dx values by convolving <tt>grayscale</tt> with filter <tt>dx_filter = [-1, 0, 1]</tt>.
+
+</p><p>
+
+Argument <tt>thr2</tt> specifies the threshold that is used in the pseudocode on slide 65 of the <a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/assignment3/">Hough Transform</a> slides, in the line:
+
+</p><pre>If orientation_difference(o, θ) &lt;= threshold: 
+</pre>
+
+
+
+<br>
+
+<hr>
+
+<br>
+
+<h3>
+Task 2 (20 points)
+</h3>
+
+Write a Matlab function <tt>result = ssd_search(grayscale, template)</tt> that measures the SSD differences between the template and each template-sized window of the grayscale image. Both <tt>grayscale</tt> and <tt>template</tt> are grayscale images, with values of type uint8.
+
+<p>
+
+Value <tt>result(i,j)</tt> should be the SSD score between the template and the template-sized subwindow of <tt>grayscale</tt> that is centered at location (i,j). 
+
+</p><p>
+
+For boundary pixels (i,j), where a template-sized subwindow of grayscale cannot be extracted, result(i,j) should be set to -1.
+
+<br>
+
+<br>
+
+</p><hr>
+
+
+<br>
+
+<h3>
+Task 3 (20 points)
+</h3>
+
+Write a Matlab function <tt>result = ssd_bn_search(grayscale, template)</tt> that measures the SSD differences (normalized for brightness, but NOT for contrast) between the template and each template-sized window of the grayscale image. Both <tt>grayscale</tt> and <tt>template</tt> are grayscale images, with values of type uint8.
+
+<p>
+
+Value <tt>result(i,j)</tt> should be the SSD score between the template and the template-sized subwindow of <tt>grayscale</tt> that is centered at location (i,j), after both the template and the subwindow have been normalized for brightness (remember, do NOT normalize for contrast).
+
+</p><p>
+
+For boundary pixels (i,j), where a template-sized subwindow of grayscale cannot be extracted, result(i,j) should be set to -1.
+
+<br>
+
+<br>
+
+
+</p><hr>
+
+<br>
+
+<h3>
+Task 4 (20 points)
+</h3>
+
+Write a Matlab function <tt>[scores, max_scales] = ssd_bn_multiscale(grayscale, template, scales)</tt> that measures the SSD differences (normalized for brightness but NOT for contrast) between the template and each location of the image at multiple scales. Both <tt>grayscale</tt> and <tt>template</tt> are grayscale images, with values of type uint8. Argument <tt>scales</tt> is a one-dimensional array specifying the set of scales that should be considered.
+
+<p>
+
+Value <tt>result(i,j)</tt> should be the best SSD score for pixel (i,j) of <tt>grayscale</tt> across all scales. Value <tt>max_scales(i,j)</tt> should be the scale that gave that best SSD score for pixel (i,j).
+
+</p><p>
+
+Hint: function <a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/lectures/all_code/00_detection/multiscale_correlation.m">multiscale_correlation</a> has many similarities with the function that you are asked to implement. The only difference is that <tt>multiscale_correlation</tt> computes scores based on normalized cross-correlation, whereas your scores are based on SSD differences after brightness normalization. 
+
+<br>
+
+<br>
+
+</p><hr>
+
+
+<h3>How to submit</h3>
+
+Submissions are only accepted via <a href="http://elearn.uta.edu/">Blackboard</a>. Submit a file called assignment3.zip, containing the following files:
+
+<ul> 
+
+<li> The Matlab source files implementing your solutions to the programming tasks.
+
+</li><li> Any additional Matlab source files that are needed to run your code. If your code needs any code files available on the course website, please include those files with your submission.
+
+</li><li> A README.txt file containing the name and UTA ID number of the student. No other information is needed for README.txt.
+
+</li></ul>
+
+We try to automate the grading process as much as possible. Not complying precisely with the above instructions and naming conventions causes a significant waste of time during grading, and thus points will be taken off for failure to comply, and/or you may receive a request to resubmit.
+
+<p>
+
+<strong>
+Please only include source code in your submissions. Do not include data files.
+
+</strong></p><p><strong>
+
+Code must run in Matlab version 2018b.
+
+</strong></p><p><strong>
+
+The submission should be a ZIP file. Any other file format will not be accepted.
+
+</strong>
+
+
+</p><hr>
+
+<a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/index.html">CSE 4310</a> -
+<a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/index.html">Assignments</a> - Assignment 3
+
+
+
+</body></html>

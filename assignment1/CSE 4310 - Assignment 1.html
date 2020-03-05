@@ -1,0 +1,182 @@
+
+<!-- saved from url=(0081)http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/assignment1/ -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ <title>CSE 4310 - Assignment 1 </title>
+</head>
+
+<body>
+<h1><a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/index.html">CSE 4310</a> -
+<a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/index.html">Assignments</a> - Assignment 1</h1>
+
+<h3><a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/">List of assignment due dates.</a></h3>
+
+The assignment should be submitted via <a href="http://elearn.uta.edu/">Blackboard</a>. 
+
+<p>
+
+<strong>Note:</strong> All data needed for this assignment can be downloaded from <a href="http://vlm1.uta.edu/~athitsos/courses/cse6367_common_data/1_intro_data.zip">1_intro_data.zip</a>.
+
+
+
+</p><hr>
+
+<p>
+
+</p><h3> 
+Task 1 (40 points) 
+</h3>
+
+<br>
+
+<img src="./CSE 4310 - Assignment 1_files/bbox0062.jpg"><br>
+Figure 1: Bounding box of the person in frame 62 of the "walkstraight" sequence.
+
+<p>
+
+
+Write a Matlab function called <tt>find_bounding_box</tt> that takes in as argument the name of an image file from the <a href="http://vlm1.uta.edu/~athitsos/courses/cse6367_common_data/1_intro_data/walkstraight">"walkstraight"</a> sequence, and computes the bounding box of the person. The function should RETURN the bounding box, as a matrix of four numbers: [top row, bottom row, left column, right column]. Furthermore, as a side effect, the function should display a figure that shows the original image, with a yellow (color code: [255 255 0]) rectangle superimposed, representing the detected bounding box. Your function can use data from any frame of the sequence in order to determine the bounding box for the frame in question.
+
+</p><p>
+
+Your function should be named <tt>find_bounding_box</tt>, and should take a single argument, i.e., the filename specifying a frame of the sequence. For example:
+
+</p><pre>&gt; find_bounding_box('walkstraight/frame0052.tif');
+</pre>
+
+Don't worry about how the function works when the person is not visible, or is only partially visible.
+
+<p>
+
+</p><hr>
+
+
+<h3> Task 2 (40 points) </h3> 
+
+Write a Matlab function called <tt>person_present</tt> that can tell when no person is present. Don't worry about how your algorithm performs on borderline cases, like frames 5-32 when the person is not fully visible. However, your algorithm should be able to tell, for example, that there is no person at frame 3, and that there is a person at frame 62. The function should return 1 if the person is present, and 0 otherwise.
+
+<p>
+
+Your function should be named <tt>person_present</tt>, and should take a single argument, i.e., the filename specifying a frame of the sequence. For example:
+
+</p><pre>&gt; person_present('walkstraight/frame0052.tif');
+</pre>
+
+<p>
+
+</p><p>
+
+</p><hr>
+
+
+<h3> Task 3 (20 points) </h3> 
+
+Write a Matlab function called <tt>person_speed</tt> that returns the 
+average velocity of the person, between two frames. The function should return a 1x2 matrix [rows_per_frame, cols_per_frame], that specifies, in pixels, the velocity of the person along the vertical direction (rows, increasing from top to bottom) and the horizontal direction (columns, increasing from left to right).
+
+<p>
+
+Your solution can be built on top of your <tt>find_bounding_box</tt> function: call <tt>find_bounding_box</tt> twice, to find the person in both frames, and calculate the velocity based (somehow) on the results of the <tt>find_bounding_box</tt> function. Notice that your function must return the velocity, which specifies the direction of motion (and that is why it needs to be a 2D vector), NOT the speed, which is a single number.
+
+</p><p>
+
+Your function should be named <tt>person_speed</tt>, and should take two arguments, i.e., the filenames specifying two frames of the sequence. For example:
+
+</p><pre>&gt; person_speed('walkstraight/frame0052.tif', 'walkstraight/frame0062.tif');
+</pre>
+
+<p>
+
+Again, don't worry about how the function works when the person is not visible, or is only partially visible.
+
+</p><p>
+
+</p><hr>
+
+<h3>
+Optional Task (just for fun and no credit)
+</h3> 
+
+Design and implement a computer vision-based heuristic, that can tell us something about the pose of the person. One pose (let's call it Pose 1) is exemplified at frames 48, 67, and 84 (among others), where one leg is extended forward and another leg is extended backwards. Another pose (let's call it Pose 2) is exemplified at frames 40, 58, and 75, where the legs are next to each other. You can incorporate your heuristic into the solution for task 1 (the function can print, as a side effect, POSE 1 or POSE 2). Again, don't worry about cases in between, like frames 56 or 78, in that case just let your program print its best guess.
+
+<p>
+
+</p><hr>
+
+<h3>Hints and Suggestions</h3>
+
+<ul>
+<li> The walkstraight sequence can be downloaded <a href="http://vlm1.uta.edu/~athitsos/courses/cse6367_spring2010/lectures/lecture1/data_lecture1.zip">from here</a>.
+</li><li> Most of the solution for Task 1 is included in the code we covered in the introductory slides. You just need to package it up nicely as a single function.
+</li><li> Use the <tt>addpath</tt> function if you need to let Matlab know where to find directories containing user-defined functions. Type <tt>help addpath</tt> to see how that works, or see examples in the code posted on the course website. 
+</li><li> In general, familiarize yourselves with the code we used in the introductory slides. You will find lots of Matlab tricks there that can be handy for this assignment.
+</li><li> File <a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/assignment1/draw_rectangle.m">draw_rectangle.m</a> implements a function that draws a rectangle.
+</li><li> Files <a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/assignment1/parse_frame_name.m">parse_frame_name.m</a> and <a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/assignment1/make_frame_name.m">make_frame_name.m</a> contain code that you should feel free to use, and that you may find useful if you want your code to automatically figure out the filename of the next frame, or previous frame, and so on. For example, try:
+<pre>[sequence_name, frame] = parse_frame_name('walkstraight/walkstraight0062.tif');
+filename = make_frame_name(sequence_name, frame+1);
+</pre>
+</li></ul>
+
+
+
+<h3>Things to note</h3>
+
+<ul>
+<li>
+The correct solutions should be functions, not scripts. See the <a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/assignment1/read_gray.m">read_gray.m</a> file to see an example of a function.
+</li><li>There is no single unique answer for any of the tasks. Just make sure your solution behaves reasonably well.
+</li><li> It goes without saying that the solutions should be based only on computer vision, not on tricks like using the frame numbers. For example, if your solution for task 2 simply checks if the frame numbers are too small or too large, that is not a computer vision-based solution.
+</li></ul>
+
+<h3>How to submit</h3>
+
+Submissions are only accepted via <a href="http://elearn.uta.edu/">Blackboard</a>. Submit a file called assignment1.zip, containing the following files:
+
+<ul> 
+
+<li> The Matlab source files implementing your solutions to the programming tasks.
+
+</li><li> Any additional Matlab source files that are needed to run your code. If your code needs any code files available on the course website, please those files with your submission.
+
+</li><li> A README.txt file containing the following:
+
+<ul>
+ 
+<li>Name and UTA ID of the student.
+
+</li><li> A description, in text, of your solution for Task 2, and how 
+well it worked (examples where it worked, examples where it didn't work, if any).
+
+</li><li> A description, in text, of your solution for Task 3, and how well it worked (examples where it worked, examples where it didn't work, if any).
+
+</li></ul>
+
+
+</li></ul>
+
+We try to automate the grading process as much as possible. Not complying precisely with the above instructions and naming conventions causes a significant waste of time during grading, and thus points will be taken off for failure to comply, and/or you may receive a request to resubmit.
+
+<p>
+
+<strong>
+Please only include source code in your submissions. Do not include data files.
+
+</strong></p><p><strong>
+
+Code must run in Matlab version 2018b.
+
+</strong></p><p><strong>
+
+The submission should be a ZIP file. Any other file format will not be accepted.
+
+</strong>
+
+
+</p><hr>
+
+<a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/index.html">CSE 4310</a> -
+<a href="http://vlm1.uta.edu/~athitsos/courses/cse4310_spring2019/assignments/index.html">Assignments</a> - Assignment 1
+
+
+
+
+</body></html>
